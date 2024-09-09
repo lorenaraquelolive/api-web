@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const { swaggerUi, swaggerSpec } = require('./swagger');
+
+// Adiciona a rota para o Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware para interpretar o corpo das requisições como JSON
 app.use(express.json());
