@@ -10,7 +10,7 @@ const swaggerSpec = swaggerJsdoc({
             description: 'Uma API simples para gerenciamento de usuários.'
         },
     },
-    apis: ['./app.js'], // Arquivo onde suas rotas estão definidas
+    apis: ['./index.js'], 
 });
 
 module.exports = {
