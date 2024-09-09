@@ -35,10 +35,73 @@ function validarUsuario(req, res, next) {
     next();
 }
 
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     summary: Mensagem de boas-vindas
+ *     description: Retorna uma mensagem de boas-vindas para a API.
+ *     responses:
+ *       200:
+ *         description: Mensagem de boas-vindas
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Bem-vindo à API de Usuários!
+ */
+
 // Rota raiz
 app.get('/', (req, res) => {
     res.send('Bem-vindo à API de Usuários!');
 });
+
+/**
+ * @openapi
+ * /usuario:
+ *   post:
+ *     summary: Adiciona um novo usuário
+ *     description: Adiciona um novo usuário ao banco de dados em memória.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cpf:
+ *                 type: string
+ *                 example: '12345678901'
+ *               nome:
+ *                 type: string
+ *                 example: João Silva
+ *               data_nascimento:
+ *                 type: string
+ *                 format: date
+ *                 example: '1990-01-01'
+ *     responses:
+ *       201:
+ *         description: Usuário adicionado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 usuario:
+ *                   type: object
+ *                   properties:
+ *                     nome:
+ *                       type: string
+ *                     data_nascimento:
+ *                       type: string
+ *                       format: date
+ *       400:
+ *         description: Dados inválidos ou incompletos
+ *       409:
+ *         description: Usuário com este CPF já existe
+ */
 
 // Rota POST para adicionar um usuário
 app.post('/usuario', validarUsuario, (req, res) => {
@@ -53,6 +116,35 @@ app.post('/usuario', validarUsuario, (req, res) => {
     usuarios[cpf] = { nome, data_nascimento };
     res.status(201).json({ message: 'Usuário adicionado com sucesso.', usuario: usuarios[cpf] });
 });
+
+/**
+ * @openapi
+ * /usuario/{cpf}:
+ *   get:
+ *     summary: Retorna os dados de um usuário
+ *     description: Recupera as informações de um usuário com base no CPF.
+ *     parameters:
+ *       - name: cpf
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dados do usuário
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 nome:
+ *                   type: string
+ *                 data_nascimento:
+ *                   type: string
+ *                   format: date
+ *       404:
+ *         description: Usuário não encontrado
+ */
 
 // Rota GET para obter um usuário pelo CPF
 app.get('/usuario/:cpf', (req, res) => {
