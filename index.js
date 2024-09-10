@@ -74,11 +74,11 @@ app.get('/', (req, res) => {
  *                 example: '12345678901'
  *               nome:
  *                 type: string
- *                 example: João Silva
+ *                 example: José dos Santos
  *               data_nascimento:
  *                 type: string
  *                 format: date
- *                 example: '1990-01-01'
+ *                 example: '1970-09-06'
  *     responses:
  *       201:
  *         description: Usuário adicionado com sucesso
@@ -157,6 +157,11 @@ app.get('/usuario/:cpf', (req, res) => {
     }
 
     res.json(usuario);
+});
+
+// Rota GET para listar todos os usuários
+app.get('/usuarios', (req, res) => {
+    res.json(Object.values(usuarios));
 });
 
 // Iniciar o servidor
